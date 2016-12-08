@@ -1,0 +1,12 @@
+{
+  "name": "teamleader-test",
+  "description": "Teamleader coding test",
+  "autoload": {
+    "psr-2": {
+      "App": "src/"
+    }
+  },
+  "require": {
+    "slim/slim": "^3.0"
+  }
+}

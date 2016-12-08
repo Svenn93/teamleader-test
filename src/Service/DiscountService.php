@@ -1,9 +1,12 @@
 <?php
 namespace CodingTest\Service;
 
+use \Psr\Http\Message\ServerRequestInterface as Request;
+use \Psr\Http\Message\ResponseInterface as Response;
+
 class DiscountService
 {
-    public $discountRules;
+    private $discountRules;
 
     function __construct()
     {
@@ -11,12 +14,12 @@ class DiscountService
     }
 
     /**
-     * Calculates the discount for this user based on his current order
+     * Calculate the discounts based on a user and his current order
      *
-     * @param $user
-     * @param $order
+     * @param Request $request
+     * @param Response $response
      */
-    public function calculateDiscount($user, $order)
+    public function calculateDiscounts(Request $request, Response $response)
     {
 
     }

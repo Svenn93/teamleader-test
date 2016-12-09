@@ -2,8 +2,8 @@
   "name": "teamleader-test",
   "description": "Teamleader coding test",
   "autoload": {
-    "psr-2": {
-      "App": "src/"
+    "psr-4": {
+      "App\\": "src/"
     }
   },
   "require": {

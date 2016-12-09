@@ -1,26 +1,52 @@
 <?php
-namespace CodingTest\Service;
+namespace App\Service;
 
-use \Psr\Http\Message\ServerRequestInterface as Request;
-use \Psr\Http\Message\ResponseInterface as Response;
+use App\Discount\DiscountInterface;
+use App\Discount\LoyaltyDiscount;
+use App\Discount\SwitchesDiscount;
+use App\Discount\ToolsDiscount;
+use App\Object\Customer;
+use App\Object\Discount;
+use App\Object\Order;
 
 class DiscountService
 {
+    /**
+     * @var DiscountInterface[]
+     */
     private $discountRules;
 
     function __construct()
     {
-        $this->discountRules = [];
+        // Note: in real world env, these rules would probably come from a DB or something like that
+        $loyaltyDiscount = new LoyaltyDiscount();
+        $switchesDiscount = new SwitchesDiscount();
+        $toolsDiscount = new ToolsDiscount();
+
+        $this->discountRules = [$loyaltyDiscount, $switchesDiscount, $toolsDiscount];
     }
 
     /**
-     * Calculate the discounts based on a user and his current order
+     * Calculate which discounts apply to this customer and his order
      *
-     * @param Request $request
-     * @param Response $response
+     * @param Customer $customer
+     * @param Order $order
+     * @return Discount[]
      */
-    public function calculateDiscounts(Request $request, Response $response)
+    public function calculateDiscounts(Customer $customer, Order $order)
     {
+        $discounts = [];
+        foreach ($this->discountRules as $discount) {
+            if (!$discount->applies($customer, $order)) {
+                continue;
+            }
 
+            $discounts[] = $discount->calculate($customer, $order);
+        }
+
+        // Flatten array
+        $discounts = array_merge($discounts);
+
+        return $discounts;
     }
 }

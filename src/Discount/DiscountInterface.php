@@ -1,15 +1,27 @@
 <?php
-namespace CodingTest\Discount;
+namespace App\Discount;
+
+use App\Object\Customer;
+use App\Object\Discount;
+use App\Object\Order;
 
 interface DiscountInterface
 {
     /**
      * Checks whether a discount can be applied
      *
-     * @param $user
-     * @param $order
+     * @param Customer $customer
+     * @param Order $order
      * @return boolean
      */
-    public function applies($user, $order);
-    public function calculate($user, $order);
+    public function applies(Customer $customer, Order $order);
+
+    /**
+     * Calculates the discount when the rule does apply
+     *
+     * @param Customer $customer
+     * @param Order $order
+     * @return Discount|Discount[]
+     */
+    public function calculate(Customer $customer, Order $order);
 }
